@@ -41,7 +41,7 @@ export const TitleProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const orderedMatches = useMemo(() => matches.reverse(), [matches]);
   const language = getLanguage() ?? getPendingLanguage();
 
-  const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>();
   const [overrideTitle, setOverrideTitle] = useState<string>();
 
   useEffect(() => {
