@@ -1,5 +1,5 @@
 import type { RouteContext } from "~/lib/router";
-import { type tolgee, useTolgeeNamespaces } from "~/lib/tolgee";
+import { type AgoraTolgeeProps, type tolgee, useTolgeeNamespaces } from "~/lib/tolgee";
 
 import { createContext, useEffect, type FC, type ReactNode, useMemo, useState, useContext } from "react";
 
@@ -31,10 +31,15 @@ export const TitleContext = createContext<TitleContext>({
   title: undefined,
 });
 
-export const TitleProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export interface TitleProviderProps {
+  children: ReactNode;
+  tolgee: AgoraTolgeeProps;
+}
+
+export const TitleProvider: FC<TitleProviderProps> = ({ children, tolgee: tolgeeProps }) => {
   const tolgee = useTolgee();
   const { getLanguage, getPendingLanguage } = tolgee;
-  useTolgeeNamespaces("platform.authentication");
+  useTolgeeNamespaces(tolgeeProps.titleNS);
 
   const matches = useMatches();
   // Put a little less strain on the React engine, by caching the reverse operation.

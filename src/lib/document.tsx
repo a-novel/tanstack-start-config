@@ -1,22 +1,23 @@
 import { BodyComponent, type BodyComponentProps, BodyStyle } from "~/lib/document.body";
-import { HeadComponent } from "~/lib/document.head";
+import { HeadComponent, type HeadComponentProps } from "~/lib/document.head";
 
 import { HeadContent, Scripts } from "@tanstack/react-router";
 import { useTolgee } from "@tolgee/react";
 
 export interface DocumentProps {
   body: Omit<BodyComponentProps, "children">;
+  head: HeadComponentProps;
 }
 
 export function DocumentProvider(props: DocumentProps) {
   return function Document({ children }: Readonly<{ children: React.ReactNode }>) {
     const tolgee = useTolgee();
-    const { body } = props;
+    const { body, head } = props;
     const { getLanguage, getPendingLanguage } = tolgee;
 
     return (
       <html lang={getLanguage() ?? getPendingLanguage()}>
-        <HeadComponent />
+        <HeadComponent {...head} />
         <BodyComponent {...body}>{children}</BodyComponent>
       </html>
     );

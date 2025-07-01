@@ -7,6 +7,7 @@ import {
   DocumentProvider,
   type DocumentProps,
   useDocumentTitle,
+  type AgoraTolgeeProps,
 } from "~/lib";
 
 import { type ReactNode, useEffect } from "react";
@@ -27,15 +28,16 @@ import { TolgeeProvider, useTranslate } from "@tolgee/react";
 export interface AgoraRouterProps<TRouteTree extends AnyRoute> {
   routeTree: TRouteTree;
   queryClient: QueryClient;
+  tolgee: AgoraTolgeeProps;
 }
 
 export const createAgoraRouter = <TRouter extends AnyRouter, TRouteTree extends AnyRoute>(
-  props: AgoraRouterProps<TRouteTree>
+  params: AgoraRouterProps<TRouteTree>
 ) =>
   routerWithQueryClient(
     createTanStackRouter({
-      routeTree: props.routeTree,
-      context: { queryClient: props.queryClient },
+      routeTree: params.routeTree,
+      context: { queryClient: params.queryClient },
       scrollRestoration: true,
       defaultPreload: "intent",
       defaultErrorComponent: ErrorComponent,
@@ -44,11 +46,11 @@ export const createAgoraRouter = <TRouter extends AnyRouter, TRouteTree extends 
         // Using the children as fallback is required, otherwise it blocks
         // tanstack router scripts from properly loading.
         <TolgeeProvider tolgee={tolgee} fallback={<FallbackDocument />}>
-          <TitleProvider>{children}</TitleProvider>
+          <TitleProvider tolgee={params.tolgee}>{children}</TitleProvider>
         </TolgeeProvider>
       ),
     }) as ValidateRouter<TRouter>,
-    props.queryClient
+    params.queryClient
   );
 
 export const createAgoraRootRoute = <Context extends RouteContext = RouteContext>(props: DocumentProps) => {
