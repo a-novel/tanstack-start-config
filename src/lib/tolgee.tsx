@@ -41,3 +41,10 @@ export const useTolgeeNamespaces = (ns: NsFallback) => {
     return () => removeActiveNs(ns);
   }, [addActiveNs, removeActiveNs, ns]);
 };
+
+export interface AgoraTolgeeProps {
+  /**
+   * The Tolgee namespace to look for title metadata translations.
+   */
+  titleNS: string;
+}
