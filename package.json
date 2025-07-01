@@ -1,7 +1,7 @@
 {
   "name": "@a-novel/tanstack-start-config",
   "private": false,
-  "version": "1.0.5",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
