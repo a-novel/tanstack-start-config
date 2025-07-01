@@ -116,4 +116,4 @@ export const createAgoraRootRoute = <Context extends RouteContext = RouteContext
 };
 
 export { Layout as AgoraDefaultLayout } from "~/components";
-export { BodyStyle, type RouteContext } from "~/lib";
+export { BodyStyle, type RouteContext, useTolgeeNamespaces, LANGS, tolgee } from "~/lib";
