@@ -28,7 +28,6 @@ Make sure you have a `.npmrc` with the following content (in your project or in 
 Then, install the package using pnpm:
 
 ```bash
-# React
 pnpm add @a-novel/tanstack-start-config
 ```
 
