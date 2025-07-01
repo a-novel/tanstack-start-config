@@ -1,0 +1,90 @@
+{
+  "name": "@a-novel/tanstack-start-config",
+  "private": false,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "lint:stylecheck": "prettier --check . --config prettier.config.ts",
+    "lint:typecheck": "tsc",
+    "lint:eslint": "pnpm dlx eslint .",
+    "lint": "pnpm lint:stylecheck && pnpm lint:typecheck && pnpm lint:eslint",
+    "format": "prettier --write . --config prettier.config.ts",
+    "build": "rm -rf ./dist && vite build && tsc --build tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "storybook:dev": "storybook dev -p 6006",
+    "storybook:build": "storybook build",
+    "ncu:peer": "npx npm-check-updates -u --dep [\"peer\"] && pnpm install",
+    "publish:patch": "pnpm version patch && git push --follow-tags",
+    "publish:minor": "pnpm version minor && git push --follow-tags",
+    "publish:major": "pnpm version major && git push --follow-tags"
+  },
+  "license": "AGPL-3.0",
+  "packageManager": "pnpm@10.12.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a-novel/package-authenticator.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "engines": {
+    "npm": ">=10.9.2",
+    "node": ">=23.11.0"
+  },
+  "peerDependencies": {
+    "@a-novel/neon-ui": "^2.8.2",
+    "@a-novel/package-authenticator": "^1.5.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
+    "@tanstack/react-query": "^5.75.4",
+    "@tanstack/react-router": "^1.123.2",
+    "@tanstack/react-router-with-query": "^1.123.2",
+    "@tolgee/format-icu": "^6.2.6",
+    "@tolgee/react": "^6.2.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@storybook/addon-docs": "^9.0.15",
+    "@storybook/react": "^9.0.15",
+    "@storybook/react-vite": "^9.0.15",
+    "@svgr/rollup": "^8.1.0",
+    "@tanstack/eslint-plugin-query": "^5.81.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^24.0.8",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint": "^9.30.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-storybook": "^9.0.15",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "storybook": "^9.0.15",
+    "tsc-alias": "^1.8.16",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "vite": "^7.0.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "dependencies": {
+    "@fontsource-variable/arimo": "^5.2.6",
+    "@fontsource/bungee": "^5.2.6"
+  }
+}

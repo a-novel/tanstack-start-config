@@ -1,0 +1,13 @@
+autoInstallPeers: true
+
+dedupePeerDependents: true
+
+gitChecks: false
+
+onlyBuiltDependencies:
+  - "@a-novel/connector-authentication"
+  - "@a-novel/neon-ui"
+  - "@a-novel/package-authenticator"
+  - esbuild
+
+strictPeerDependencies: false
