@@ -1,4 +1,4 @@
-import { Error as ErrorComponent, Layout, type LayoutProps, NotFound as NotFoundComponent } from "~/components";
+import { Error as ErrorComponent, NotFound as NotFoundComponent } from "~/components";
 import {
   FallbackDocument,
   tolgee,
@@ -9,11 +9,10 @@ import {
   useDocumentTitle,
 } from "~/lib";
 
-import { type ElementType, type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 
 import arimo from "@fontsource-variable/arimo?url";
 import bungee from "@fontsource/bungee?url";
-import type { ButtonTypeMap } from "@mui/material";
 import type { QueryClient } from "@tanstack/react-query";
 import {
   createRouter as createTanStackRouter,
@@ -116,9 +115,4 @@ export const createAgoraRootRoute = <Context extends RouteContext = RouteContext
   });
 };
 
-export const AgoraDefaultLayout = <ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"]>(
-  props: Omit<LayoutProps<ManageAccountButtonProps>, "children">
-) =>
-  function AgoraLayout({ children }: { children: ReactNode }) {
-    return <Layout {...props}>{children}</Layout>;
-  };
+export { Layout as AgoraDefaultLayout } from "~/components";
