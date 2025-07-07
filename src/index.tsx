@@ -1,6 +1,5 @@
 import { Error as ErrorComponent, NotFound as NotFoundComponent } from "~/components";
 import {
-  FallbackDocument,
   tolgee,
   TitleProvider,
   type RouteContext,
@@ -10,7 +9,7 @@ import {
   type AgoraTolgeeProps,
 } from "~/lib";
 
-import { type ReactNode, useEffect } from "react";
+import { type FC, type ReactNode, useEffect } from "react";
 
 import arimo from "@fontsource-variable/arimo?url";
 import bungee from "@fontsource/bungee?url";
@@ -21,37 +20,79 @@ import {
   type AnyRouter,
   createRootRouteWithContext,
   Outlet,
+  type RouterConstructorOptions,
+  type TrailingSlashOption,
+  type RouterHistory,
 } from "@tanstack/react-router";
 import { routerWithQueryClient, type ValidateRouter } from "@tanstack/react-router-with-query";
 import { TolgeeProvider, useTranslate } from "@tolgee/react";
 
-export interface AgoraRouterProps<TRouteTree extends AnyRoute> {
+export interface DefaultWrapperProps {
+  tolgee: AgoraTolgeeProps;
+  children: ReactNode;
+}
+
+export const DefaultWrapper: FC<DefaultWrapperProps> = (params) => (
+  <TolgeeProvider tolgee={tolgee}>
+    <TitleProvider tolgee={params.tolgee}>{params.children}</TitleProvider>
+  </TolgeeProvider>
+);
+
+export interface AgoraRouterProps<
+  TRouteTree extends AnyRoute,
+  TTrailingSlashOption extends TrailingSlashOption,
+  TDefaultStructuralSharingOption extends boolean,
+  TRouterHistory extends RouterHistory,
+  TDehydrated extends Record<string, any>,
+> {
   routeTree: TRouteTree;
   queryClient: QueryClient;
   tolgee: AgoraTolgeeProps;
+  router?: Partial<
+    RouterConstructorOptions<
+      TRouteTree,
+      TTrailingSlashOption,
+      TDefaultStructuralSharingOption,
+      TRouterHistory,
+      TDehydrated
+    >
+  >;
 }
 
-export const createAgoraRouter = <TRouter extends AnyRouter, TRouteTree extends AnyRoute>(
-  params: AgoraRouterProps<TRouteTree>
-) =>
-  routerWithQueryClient(
-    createTanStackRouter({
-      routeTree: params.routeTree,
-      context: { queryClient: params.queryClient },
-      scrollRestoration: true,
-      defaultPreload: "intent",
-      defaultErrorComponent: ErrorComponent,
-      defaultNotFoundComponent: NotFoundComponent,
-      InnerWrap: ({ children }: { children: ReactNode }) => (
-        // Using the children as fallback is required, otherwise it blocks
-        // tanstack router scripts from properly loading.
-        <TolgeeProvider tolgee={tolgee} fallback={<FallbackDocument />}>
-          <TitleProvider tolgee={params.tolgee}>{children}</TitleProvider>
-        </TolgeeProvider>
-      ),
-    }) as ValidateRouter<TRouter>,
-    params.queryClient
-  );
+export const createAgoraRouter = <
+  TRouter extends AnyRouter,
+  TRouteTree extends AnyRoute,
+  TTrailingSlashOption extends TrailingSlashOption,
+  TDefaultStructuralSharingOption extends boolean,
+  TRouterHistory extends RouterHistory,
+  TDehydrated extends Record<string, any>,
+>(
+  params: AgoraRouterProps<
+    TRouteTree,
+    TTrailingSlashOption,
+    TDefaultStructuralSharingOption,
+    TRouterHistory,
+    TDehydrated
+  >
+) => {
+  const routerOptions: RouterConstructorOptions<
+    TRouteTree,
+    TTrailingSlashOption,
+    TDefaultStructuralSharingOption,
+    TRouterHistory,
+    TDehydrated
+  > = {
+    routeTree: params.routeTree,
+    context: { queryClient: params.queryClient },
+    scrollRestoration: true,
+    defaultPreload: "intent",
+    defaultErrorComponent: ErrorComponent,
+    defaultNotFoundComponent: NotFoundComponent,
+    ...params.router,
+  };
+
+  return routerWithQueryClient(createTanStackRouter(routerOptions) as ValidateRouter<TRouter>, params.queryClient);
+};
 
 export const createAgoraRootRoute = <Context extends RouteContext = RouteContext>(props: DocumentProps) => {
   const Document = DocumentProvider(props);
@@ -118,4 +159,4 @@ export const createAgoraRootRoute = <Context extends RouteContext = RouteContext
 };
 
 export { Layout as AgoraDefaultLayout } from "~/components";
-export { BodyStyle, type RouteContext, useTolgeeNamespaces, LANGS, tolgee } from "~/lib";
+export { BodyStyle, type RouteContext, useTolgeeNamespaces, LANGS, tolgee, TitleProvider } from "~/lib";
