@@ -1,18 +1,7 @@
 import { Error as ErrorComponent, NotFound as NotFoundComponent } from "~/components";
-import {
-  tolgee,
-  TitleProvider,
-  type RouteContext,
-  DocumentProvider,
-  type DocumentProps,
-  useDocumentTitle,
-  type AgoraTolgeeProps,
-} from "~/lib";
-
-import { type FC, type ReactNode, useEffect } from "react";
+import { type RouteContext, DocumentProvider, type DocumentProps, WithDocumentTitle } from "~/lib";
 
 import arimo from "@fontsource-variable/arimo?url";
-import bungee from "@fontsource/bungee?url";
 import type { QueryClient } from "@tanstack/react-query";
 import {
   createRouter as createTanStackRouter,
@@ -25,18 +14,6 @@ import {
   type RouterHistory,
 } from "@tanstack/react-router";
 import { routerWithQueryClient, type ValidateRouter } from "@tanstack/react-router-with-query";
-import { TolgeeProvider, useTranslate } from "@tolgee/react";
-
-export interface DefaultWrapperProps {
-  tolgee: AgoraTolgeeProps;
-  children: ReactNode;
-}
-
-export const DefaultWrapper: FC<DefaultWrapperProps> = (params) => (
-  <TolgeeProvider tolgee={tolgee}>
-    <TitleProvider tolgee={params.tolgee}>{params.children}</TitleProvider>
-  </TolgeeProvider>
-);
 
 export interface AgoraRouterProps<
   TRouteTree extends AnyRoute,
@@ -47,7 +24,6 @@ export interface AgoraRouterProps<
 > {
   routeTree: TRouteTree;
   queryClient: QueryClient;
-  tolgee: AgoraTolgeeProps;
   router?: Partial<
     RouterConstructorOptions<
       TRouteTree,
@@ -115,36 +91,21 @@ export const createAgoraRootRoute = <Context extends RouteContext = RouteContext
           rel: "stylesheet",
         },
         { href: arimo, rel: "stylesheet" },
-        { href: bungee, rel: "stylesheet" },
       ],
     }),
     errorComponent: function ErrorComponentWrapped() {
-      const { t } = useTranslate("generic");
-      const { setTitle } = useDocumentTitle();
-
-      useEffect(() => {
-        setTitle(t("nav.error.metadata.title", { ns: "generic" }));
-        return () => setTitle(undefined);
-      }, [setTitle, t]);
-
       return (
         <Document>
           <ErrorComponent />
+          <WithDocumentTitle tKey="nav.error.metadata.title" ns="generic" />
         </Document>
       );
     },
     notFoundComponent: function NotFoundComponentWrapped() {
-      const { t } = useTranslate("generic");
-      const { setTitle } = useDocumentTitle();
-
-      useEffect(() => {
-        setTitle(t("nav.notFound.metadata.title", { ns: "generic" }));
-        return () => setTitle(undefined);
-      }, [setTitle, t]);
-
       return (
         <Document>
           <NotFoundComponent />
+          <WithDocumentTitle tKey="nav.notFound.metadata.title" ns="generic" />
         </Document>
       );
     },
@@ -159,12 +120,4 @@ export const createAgoraRootRoute = <Context extends RouteContext = RouteContext
 };
 
 export { Layout as AgoraDefaultLayout } from "~/components";
-export {
-  BodyStyle,
-  type RouteContext,
-  useTolgeeNamespaces,
-  LANGS,
-  tolgee,
-  TitleProvider,
-  FallbackDocument,
-} from "~/lib";
+export { BodyStyle, type RouteContext, useTolgeeNamespaces, LANGS, tolgee } from "~/lib";
