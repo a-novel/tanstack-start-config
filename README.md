@@ -47,13 +47,7 @@ import { QueryClient } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 export function createRouter() {
-  return createAgoraRouter({
-    routeTree,
-    queryClient,
-    tolgee: {
-      titleNS: "platform.authentication",
-    },
-  });
+  return createAgoraRouter({ routeTree, queryClient });
 }
 
 declare module "@tanstack/react-router" {
@@ -91,11 +85,9 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 export const Route = createAgoraRootRoute({
-  body: { layout: Layout },
-  head: {
-    tolgee: {
-      titleNS: "platform.authentication",
-    },
+  layout: Layout,
+  tolgee: {
+    titleNS: "platform.authentication",
   },
 });
 ```
