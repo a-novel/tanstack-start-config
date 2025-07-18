@@ -28,6 +28,9 @@ Make sure you have a `.npmrc` with the following content (in your project or in 
 Then, install the package using pnpm:
 
 ```bash
+# pnpm config set auto-install-peers true
+#  Or
+# pnpm config set auto-install-peers true --location project
 pnpm add @a-novel/tanstack-start-config
 ```
 
